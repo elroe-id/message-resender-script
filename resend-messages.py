@@ -17,7 +17,7 @@ def resend_messages(rids):
         r = requests.post(url, data=data)
         print(r)
         if r.status_code != 200:
-            failed.write(rid+"\n")
+            failed.write(rid+"\tSTATUS CODE: "+str(r.status_code)+"\n")
 
 
 def read_rids(filename):
@@ -27,6 +27,7 @@ def read_rids(filename):
     rids = open(filename, 'rt', encoding='utf-16').readlines()
     rids = [r.strip() for r in rids]  # Strip newline char
     rids = [r for r in rids if len(r) != 0]  # Filter empty lines
+    rids = [r.replace("\"","") for r in rids] # Remove quotes
     return rids
 
 # def fetch_rids_from_db(query):

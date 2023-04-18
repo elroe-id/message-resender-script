@@ -5,20 +5,19 @@ import traceback
 import argparse
 import csv
 import time
-#import config as conf
-#from api import *
-#from db import *
-#from utils import *
 import requests
 
 
 def resend_messages(rids):
     url = "https://api-internal.fayda.et/registrationprocessor/v1/sender-stage/resend"
+    failed = open("failed.txt","a")
     for rid in rids:
         data = "{\"rid\":\""+rid+"\", \"regType\":\"NEW\", \"process\":\"NEW\", \"source\":\"REGISTRARTION_CLIENT\"}"
         print(data)
         r = requests.post(url, data=data)
         print(r)
+        if r.status_code != 200:
+            failed.write(rid+"\n")
 
 
 def read_rids(filename):
